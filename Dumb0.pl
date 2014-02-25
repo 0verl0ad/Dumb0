@@ -1,4 +1,4 @@
-###################### Dumb0 #######################
+###################### dumb0 #######################
 # Coded by The X-C3LL (J.M. Fernández)             #
 # Email: overloadblog////hotmail////es             #
 # Blog: 0verl0ad.blogspot.com                      #
@@ -31,6 +31,12 @@ print q(
 
 );
 
+
+if (!$flag_type or !$flag_url) {
+	&use;
+	exit;
+}
+
 if ($flag_type eq "SMF") { $tail = "/index.php?action=profile;u="; }
 if ($flag_type eq "IPB") { $tail = "/index.php?showuser="; }
 if ($flag_type eq "XEN") { $tail = "/members/"; }
@@ -40,6 +46,7 @@ if ($flag_type eq "useBB") { $tail = "/profile.php?id="; }
 if ($flag_type eq "vanilla") { $tail = "/account/"; }
 if ($flag_type eq "bbPress") { $tail = "/profile.php?id="; }
 if ($flag_type eq "WP") { $tail = "/?author="; }
+if ($flag_type eq "SPIP") { $tail = "/spip.php?auteur"; }
 
 if ($flag_log) {
 	print "[!] Introduzca la cookie para mandar las peticiones desde su sesion\n\n";
@@ -94,3 +101,21 @@ while ($i != -1) {
 
 
 print "[!] Dumpeo finalizado con exito\n\n";
+
+sub use {
+print q(
+	Uso: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log]
+		
+	Supported: 
+			SMF   	--		Simple Machine Forums
+			IPB   	--		Invision Power Board
+			XEN     --		Xen Foro
+			VB      --		vBulletin
+			myBB    --
+			useBB   --
+			vanilla --
+			bbPress --
+			WP	--		WordPress
+			SPIP	--		SPIP CMS
+);
+}
