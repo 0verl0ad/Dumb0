@@ -47,6 +47,7 @@ if ($flag_type eq "vanilla") { $tail = "/account/"; }
 if ($flag_type eq "bbPress") { $tail = "/profile.php?id="; }
 if ($flag_type eq "WP") { $tail = "/?author="; }
 if ($flag_type eq "SPIP") { $tail = "/spip.php?auteur"; }
+if ($flag_type eq "MOODLE") { $tail = "/user/view.php?id="; }
 if ($flag_type eq "DRUPAL") { &drupal($flag_url); } 
 
 if ($flag_log) {
@@ -119,6 +120,7 @@ print q(
 			WP	--		WordPress
 			SPIP	--		SPIP CMS
 			DRUPAL  --		Drupal
+			MOODLE 	--		Moodle 
 );
 }
 
