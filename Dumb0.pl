@@ -137,6 +137,7 @@ sub drupal {
 		foreach $user (@usuarios) {
 			@nick = split('":"', $user);
 			$user_clean = substr($nick[0], 1);
+			$user_clean =~ s/\\u0027/\'/g;
 			print "\t\t[-] Usuario encontrado: $user_clean\n";
 		}
 	}
