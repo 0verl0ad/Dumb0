@@ -11,7 +11,8 @@ use Getopt::Long;
 GetOptions(
 		"type=s"=> \$flag_type,
 		"url=s"=> \$flag_url,
-		"log"=>  \$flag_log
+		"log"=>  \$flag_log,
+		"file=s"=> \$flag_file
          );
 
 print q(
@@ -37,6 +38,10 @@ if (!$flag_type or !$flag_url) {
 	exit;
 }
 
+if ($flag_file) {
+open(FILE,">>", $flag_file);
+}
+
 if ($flag_type eq "SMF") { $tail = "/index.php?action=profile;u="; }
 if ($flag_type eq "IPB") { $tail = "/index.php?showuser="; }
 if ($flag_type eq "XEN") { $tail = "/members/"; }
@@ -57,6 +62,7 @@ if ($flag_log) {
 	chomp($cookie);
 }
 $i = "1";
+
 
 
 print "[!] Para poder iniciar la busqueda de usuarios primero usted debe indicar el patron a eliminar\n";
@@ -96,6 +102,7 @@ while ($i != -1) {
 			$tl = length($titulo);
 			$ul = $tl - $size;
 			$usuario = substr($titulo,0, $ul);
+			if ($flag_file) { print FILE $usuario."\n";}
 			print "[+] Posible usuario encontrado ~> ".$usuario."\n";
 			$i++;
 		}
@@ -106,7 +113,7 @@ print "[!] Dumpeo finalizado con exito\n\n";
 
 sub use {
 print q(
-	Uso: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log]
+	Uso: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log] [--file]
 		
 	Supported: 
 			SMF   	--		Simple Machine Forums
@@ -140,9 +147,13 @@ sub drupal {
 			@nick = split('":"', $user);
 			$user_clean = substr($nick[0], 1);
 			$user_clean =~ s/\\u0027/\'/g;
+			if ($flag_file) { print FILE $user_clean."\n";}
 			print "\t\t[-] Usuario encontrado: $user_clean\n";
 		}
 	}
 }
+
+
+close(FILE);
 
 
