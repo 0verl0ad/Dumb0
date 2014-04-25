@@ -3,7 +3,7 @@
 # Email: overloadblog////hotmail////es             #
 # Blog: 0verl0ad.blogspot.com                      #
 # Twitter: https://twitter.com/TheXC3LL            #
-######################  v0.1  ######################
+######################  v0.2  ######################
 
 use LWP::UserAgent;
 use Getopt::Long;
@@ -54,6 +54,20 @@ if ($flag_type eq "WP") { $tail = "/?author="; }
 if ($flag_type eq "SPIP") { $tail = "/spip.php?auteur"; }
 if ($flag_type eq "MOODLE") { $tail = "/user/view.php?id="; }
 if ($flag_type eq "DRUPAL") { &drupal($flag_url); } 
+if ($flag_type eq "BEE") { $tail = "/user_profile.php?uid="; }
+if ($flag_type eq "FLUX") { $tail= "/profile.php?id="; }
+if ($flag_type eq "FUD") { $tail = "/index.php?t=usrinfo&id=";}
+if ($flag_type eq "punBB") { $tail = "/profile.php?id="; }
+if ($flag_type eq "ACM") { $tail = "/?page=profile&id="; }
+if ($flag_type eq "BURN") { $tail= "/profile.php?userid="; }
+if ($flag_type eq "COM") { $tail = "/user/Profile.aspx?UserID="; }
+if ($flag_type eq "deluxeBB") { $tail = "/misc.php?sub=profile&uid="; }
+if ($flag_type eq "fusionBB") { $tail = "/showuser.php?uid/"; }
+if ($flag_type eq "JFORUM") { $tail = "/jforum/user/profile/"; $add = ".page"; }
+if ($flag_type eq "JITBIT") { $tail = "/viewprofile.aspx?UserID="; }
+if ($flag_type eq "JIVE") { $tail = "/profile/"; }
+if ($flag_type eq "NEAR") { $tail = "/users/"; }
+
 
 if ($flag_log) {
 	print "[!] Introduzca la cookie para mandar las peticiones desde su sesion\n\n";
@@ -85,26 +99,27 @@ foreach $linea (@contenido) {
 
 print "\n[!] Empezando el dumpeo en $flag_url...\n\n";
 
-while ($i != -1) {
+$j = 0;
+while ($j <= 10) { 
 		$ua = LWP::UserAgent->new; $ua->agent('Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20131030');
 		$response = $ua->get($flag_url.$tail.$i.$add, Cookie => $cookie);
-		$html = $response->decoded_content;
+		$html = $response->decoded_content; 
 		@contenido = split("\n", $html);
 		foreach $linea (@contenido) {
 			if ($linea =~ m/\<title\>(.*?)\<\/title\>/g) {
-				$titulo = $1;
+				$titulo = $1; 
 			}
 
 		}
 		if ($response->status_line =~ /404/) {
-			$i = "-1";
-		} else {
+			$j++; $i++;
+		} else { 
 			$tl = length($titulo);
 			$ul = $tl - $size;
 			$usuario = substr($titulo,0, $ul);
 			if ($flag_file) { print FILE $usuario."\n";}
 			print "[+] Posible usuario encontrado ~> ".$usuario."\n";
-			$i++;
+			$i++; $j = 0;
 		}
 	}	
 
@@ -116,18 +131,32 @@ print q(
 	Uso: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log] [--file]
 		
 	Supported: 
-			SMF   	--		Simple Machine Forums
-			IPB   	--		Invision Power Board
-			XEN     --		Xen Foro
-			VB      --		vBulletin
-			myBB    --
-			useBB   --
-			vanilla --
-			bbPress --
-			WP	--		WordPress
-			SPIP	--		SPIP CMS
-			DRUPAL  --		Drupal
-			MOODLE 	--		Moodle 
+			SMF   	 --		Simple Machine Forums
+			IPB   	 --		Invision Power Board
+			XEN      --		Xen Foro
+			VB       --		vBulletin
+			myBB     --
+			useBB    --
+			vanilla  --
+			bbPress  --
+			WP	 --		WordPress
+			SPIP	 --		SPIP CMS
+			DRUPAL   --		Drupal
+			MOODLE 	 --		Moodle 
+			BEE	 --		Beehive Forums
+			FLUX	 --		fluxBB
+			FUD	 --		FUDforum
+			punBB	 --
+			ACM	 --		AcmImBoard XD
+			BURN	 --		Burning Board
+			COM	 --		Community Servers
+			deluxeBB --		
+			fusionBB --
+			JFORUM	 --
+			JITBIT 	 --		Jibit ASPNetForum
+			JIVE	 --		Jive Forums
+			NEAR	 --		Near Forums
+			
 );
 }
 
