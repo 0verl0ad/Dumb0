@@ -3,7 +3,7 @@
 # Email: overloadblog////hotmail////es             #
 # Blog: 0verl0ad.blogspot.com                      #
 # Twitter: https://twitter.com/TheXC3LL            #
-######################  v0.2  ######################
+######################  v0.1  ######################
 
 use LWP::UserAgent;
 use Getopt::Long;
@@ -67,6 +67,8 @@ if ($flag_type eq "JFORUM") { $tail = "/jforum/user/profile/"; $add = ".page"; }
 if ($flag_type eq "JITBIT") { $tail = "/viewprofile.aspx?UserID="; }
 if ($flag_type eq "JIVE") { $tail = "/profile/"; }
 if ($flag_type eq "NEAR") { $tail = "/users/"; }
+if ($flag_type eq "OVBB") { $tail = "/member.php?action=getprofile&userid="; }
+if ($flag_type eq "TikiWiki") { $tail = "/tiki-user_information.php?userId="; }
 
 
 if ($flag_log) {
@@ -156,6 +158,8 @@ print q(
 			JITBIT 	 --		Jibit ASPNetForum
 			JIVE	 --		Jive Forums
 			NEAR	 --		Near Forums
+			OVBB	 --		
+			TikiWiki --		TikiWiki CMS-Groupware
 			
 );
 }
