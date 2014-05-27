@@ -1,7 +1,7 @@
 Dumb0
 =====
 
-A simple tool to dump users forums popular forums and CMS (WordPress, SMF, vBulletin, IP Board, XEN forums, myBB, useBB, vanilla, bbPress...). Supported:
+A simple tool to dump users forums popular forums and CMS (WordPress, SMF, vBulletin, IP Board, XEN forums, myBB, useBB, vanilla, bbPress...). Supported 27 forums/CMS (help us to grow the number!:
 
 			SMF   	 --		Simple Machine Forums
 			IPB   	 --		Invision Power Board
