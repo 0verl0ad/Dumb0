@@ -31,3 +31,9 @@ A simple tool to dump users forums popular forums and CMS (WordPress, SMF, vBull
 			OVBB	 --		
 			TikiWiki --		TikiWiki CMS-Groupware
 			
+
+How to use
+===
+
+perl dumb0.pl --url=[TARGET URL] --type=[CMS/FORUM ID] {OPTIONS: --log=[SESSION COOKIE] --file[FILENAME] }
+
