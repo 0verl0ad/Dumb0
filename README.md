@@ -35,7 +35,7 @@ A simple tool to dump users forums popular forums and CMS (WordPress, SMF, vBull
 How to use
 ===
 
-perl dumb0.pl --url=[TARGET URL] --type=[CMS/FORUM ID] {OPTIONS: --log=[SESSION COOKIE] --file[FILENAME] }
+python dumb0.py --url=[TARGET URL] --type=[CMS/FORUM ID] {OPTIONS: --cookie=[SESSION COOKIE] }
 
 
 
